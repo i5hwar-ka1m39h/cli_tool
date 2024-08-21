@@ -4,7 +4,8 @@
 const {program} = require('commander');
 const pkg = require('../package.json');
 const { default: axios } = require('axios');
-const colors = require('colors')
+const colors = require('colors');
+const  coinData  = require('../constant');
 
 program.version(pkg.version)
 
@@ -33,7 +34,43 @@ const getTop = async() =>{
     
 }
 
-program.command('get').description('gets the top 5 cryptocurrency infomation').action(async()=>getTop())
+const getCoin = async(coin) =>{
+    const coinId = coinData[coin.toUpperCase()]
+
+    const response = await axios.get(`https://api.coincap.io/v2/assets/${coinId}`)
+    let data = response.data.data;
+
+    console.log("--------------------------------------------------");
+    console.log(`${coinId} `.yellow + 'info');
+    console.log("--------------------------------------------------");
+
+    console.log('symbol:'.padEnd(15)+`${data.symbol}`.blue + '\n' +
+        'rank:'.padEnd(15) + `${data.rank}`.red + '\n' +
+        'price:'.padEnd(15) + `$ `.green+ `${data.priceUsd}` + '\n' 
+
+
+
+    );
+
+    
+    
+    
+    
+}
+
+program
+    .command('get')
+    .description('gets the top 5 cryptocurrency infomation')
+    .option('--coin <symbol>', 'get individual coin info')
+    .action(async(cmd)=>{
+        if(cmd.coin){
+            await getCoin(cmd.coin)
+        }else{
+            await getTop()
+        }
+    })
+
+
 
 
 

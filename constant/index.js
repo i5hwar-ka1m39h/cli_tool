@@ -1,4 +1,4 @@
-export const coinData = {
+ const coinData = {
     BTC: 'bitcoin',
     ETH: 'ethereum',
     USDT: 'tether',
@@ -100,3 +100,5 @@ export const coinData = {
     KSM: 'kusama',
     SUPER: 'superfarm'
   }
+
+  module.exports = coinData
